@@ -1,2 +1,2 @@
 # rolling-dice
-Rolling dice in the browser using JS
+Rolling Dice online using HTML/Bootstrap/JQUery.
