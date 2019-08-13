@@ -6,17 +6,39 @@ Repository: https://github.com/leonardoInf/rolling-dice
 */
 
 //Global variables for communication between anonymous functions
-var index = 0;
+var rolling_index = 0;                  
 var donePreRolling = false;
 // ************************************* 
  
 var amountOfLoops = 2;                 //toggle amount of pre-rolls
-var loopDuration = 900;                //duration of one loop in milliseconds
+var preRollDuration = 700;             //duration of one pre-roll in milliseconds
+var finalRollDuration = 1200;          //..
+
+var rollHistory = [];                   //this is where previous rolls will be saved during execution
+var rollHistoryIndex = 1;               //holds the index of the currently viewed element
 
 $(document).ready(function(){          //when document is ready...
-    $("#roll-it").click(function(){     
-           rollIt(false);             //set click event handler
+    
+    //handle dice roll
+    $("#roll-it").click(function(){
+        rollHistoryIndex = 1;           //skip last element
+        disableButtons();
+        console.log(rollHistory);
+        rollIt(false);             //set click event handler, start preroll
     });
+    
+    //show previous roll
+    $("#previous").click(function(){
+        clearDices();
+        enableNextButton();
+        rollHistoryIndex += 1;
+        highlightDice(rollHistory[rollHistory.length-(rollHistoryIndex)]);
+        if((rollHistory.length-1) < rollHistoryIndex+1){    //disable button if there are no more elements
+            disablePreviousButton();
+        }
+        console.log("Looking at: " + rollHistory[rollHistory.length-(rollHistoryIndex)]);
+    });
+   
 });
 
 function rollIt(donePreRolling){
@@ -24,27 +46,29 @@ function rollIt(donePreRolling){
         var randInt = 0;
         
         var ID2 = setInterval(function(){
-            index += 1;
-            var index_mod = index % 6;
+            rolling_index += 1;
+            var rolling_index_mod = rolling_index % 6;
             
-            if(index == 1){
+            if(rolling_index == 1){
                 randInt = Math.floor(Math.random() * 6) + 1; //pseudorandom ints between 1 and 6
                 console.log("randInt: " + (randInt%6));
             }
             
-            if(index > randInt){
-                clearInterval(ID2);
-                index = 0;
+            if(rolling_index > randInt){
+                rolling_index = 0;
+                rollHistory.push(randInt%6);  //add new roll to history
+                enableButtons();             //buttons can be used again
+                clearInterval(ID2);          //unregister interval loop
                 return;
             }
             
-            selectDice(index_mod);
-            var index_decremented = index_mod - 1; 
-            var deselectNum = ((index_decremented)+6)%6; //see preRoll() for explanation
+            selectDice(rolling_index_mod);
+            var rolling_index_decremented = rolling_index_mod - 1; 
+            var deselectNum = ((rolling_index_decremented)+6)%6; //including modulos for -1
             deselectDice(deselectNum);
-            console.log(index);
+            console.log(rolling_index);
             
-        }, loopDuration/6);
+        }, finalRollDuration/6);
     }
     else preRoll();
 }
@@ -53,33 +77,37 @@ function rollIt(donePreRolling){
 function preRoll(){
     clearDices();
     var ID =  setInterval(function(){  //every 500ms...
-            index += 1;
-            var index_mod = index%6;   //allow multiple loops
+            rolling_index += 1;
+            var rolling_index_mod = rolling_index%6;   //allow multiple loops
             
-            if(index > 6*amountOfLoops){
-                index=0;
+            if(rolling_index > 6*amountOfLoops){
+                rolling_index=0;
                 $("#dice0").css("color", "black");
-                clearInterval(ID);
+                clearInterval(ID); //unregister interval loop
                 rollIt(true);
                 return;
             }
-                console.log("Ändere dice" + index_mod);
-                if((index_mod) == 0){
+                console.log("changing dice" + rolling_index_mod);
+                if((rolling_index_mod) == 0){
                     selectDice(0);
                     $("#dice0").css("color", "green");
                     $("#dice5").css("color", "black");
                 }
                 else{
-                    selectDice(index_mod);
-                    var index_decremented = index_mod-1;
-                    var deselectNum = ((index_decremented)+6)%6;  //correctly implement mod for -1
+                    selectDice(rolling_index_mod);
+                    var rolling_index_decremented = rolling_index_mod-1;
+                    var deselectNum = ((rolling_index_decremented)+6)%6;  //correctly implement mod for -1
                     deselectDice(deselectNum);
                 }
-            }, loopDuration/6);
+            }, preRollDuration/6);
 }
 
 function selectDice(num){
     $("#dice" + num).css("color", "green");
+}
+
+function highlightDice(num){
+    $("#dice" + num).css("color", "yellow");
 }
 
 function deselectDice(num){
@@ -90,6 +118,42 @@ function clearDices(){
     for(var i = 0; i<6; i++){
         deselectDice(i);
     }
+}
+
+function disableButtons(){
+    $("#roll-it").css("pointer-events","none");    //make "roll-it"-button temporarly not a target of mouse events (i.e. unclickable)
+    $("#roll-it").addClass("disabled");     //make it look inactive
+    $("#previous").css("pointer-events","none");
+    $("#previous").addClass("disabled");
+}
+
+function enableButtons(){
+    $("#roll-it").css("pointer-events","auto");    //make it clickable
+    $("#roll-it").removeClass("disabled");            //make it look active
+    if(rollHistory.length > 1){
+    $("#previous").css("pointer-events","auto");
+    $("#previous").removeClass("disabled");
+    }
+}
+
+function disablePreviousButton(){
+    $("#previous").css("pointer-events","none");
+    $("#previous").addClass("disabled");
+}
+
+function enablePreviousButton(){
+    $("#previous").css("pointer-events","auto");
+    $("#previous").removeClass("disabled");
+}
+
+function disableNextButton(){
+    $("#next").css("pointer-events","none");
+    $("#next").addClass("disabled");
+}
+
+function enableNextButton(){
+    $("#next").css("pointer-events","auto");
+    $("#next").removeClass("disabled");
 }
     
     
