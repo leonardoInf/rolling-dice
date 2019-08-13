@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<!--
+Rolling Dice in the browser
+*********************************************
+08/2019, by leonardoInf
+Repository: https://github.com/leonardoInf/rolling-dice
+-->
+
+<head>
+    <title>Rolling Dice in the browser</title>
+    <meta charset="utf-8"/>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+
+<body>
+<header>
+    <div class="container-fluid">
+    <h1>Rolling Dice in the browser</h1>
+    <h4>Press K to roll the dice. Use J/L to view previous rolls.</h4>
+</header>
+
+<article>
+    <div id="main">
+    <h4>Game</h4>
+    <div class="text-center" id="box">
+        <div id="dices">
+        <span class="dice" id="dice1">&#9856;</span>
+        <span class="dice" id="dice2">&#9857;</span>
+        <span class="dice" id="dice3">&#9858;</span>
+        <span class="dice" id="dice4">&#9859;</span>
+        <span class="dice" id="dice5">&#9860;</span>
+        <span class="dice" id="dice6">&#9861;</span>
+        </div>
+        
+        <div class="text-center" id="controls">
+        <span class="btn btn-warning" id="roll-it">Roll it!</span>
+        <span class="btn btn-primary disabled" id="previous">Previous</span>
+        <span class="btn btn-danger disabled" id="next">Next</span>
+        </div>
+    </div>
+    <h4>Stats</h4>
+    <div id="table-wrapper">
+  <table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Number of Pips</th>
+      <th scope="col">Absolute frequency</th>
+      <th scope="col">Relative frequency</th>
+    </tr>
+    </thead>
+        <tbody>
+            <tr>
+                <th>1</th>
+                <td>N. A.</td>
+                <td>N. A.</td>
+            </tr>
+            <tr>
+                <th>2</th>
+                <td>N. A.</td>
+                <td>N. A.</td>
+            </tr>
+            <tr>
+                <th>3</th>
+                <td>N. A.</td>
+                <td>N. A.</td>
+            </tr>
+            <tr>
+                <th>4</th>
+                <td>N. A.</td>
+                <td>N. A.</td>
+            </tr>
+            <tr>
+                <th>5</th>
+                <td>N. A.</td>
+                <td>N. A.</td>
+            </tr>
+            <tr>
+                <th>6</th>
+                <td>N. A:</td>
+                <td>N. A.</td>
+            </tr>
+        </tbody>
+        </table>
+        </div>
+    </div>
+</div>
+</article>
+
+<footer>
+
+</footer>
+
+<script src="script.js"></script>
+<p>This webpage was designed and coded by 
+    <a href="http://www.github.com/leonardoInf">leonardoInf</a>
+</p>
+</body>
+</html>
