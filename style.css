@@ -5,24 +5,28 @@ Rolling Dice online - Layout
 Repository: https://github.com/leonardoInf/rolling-dice
 */
 
+h4 {
+    color: grey;
+}
 
 .dice {
     font-size: 5.5rem;
 }
         
 #main {
-        padding-top: 3%;
+        padding-top: 2%;
         width: 100%;
         margin-bottom: 2rem;
 }
         
 #box {
+    display: inline-block;
     position: relative;
     width: 50%;
     left: 25%;
     border: 5px solid black;
     border-radius: 20px;     /*Rounded edges*/
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
         
 #controls{
@@ -43,7 +47,7 @@ Repository: https://github.com/leonardoInf/rolling-dice
     position: relative;
     left: 25%;
     width: 50%;
-    height: 10rem;
+    height: 11rem;
     border: 2px solid black;
     overflow: auto;
 }
