@@ -10,6 +10,7 @@ Repository: https://github.com/leonardoInf/rolling-dice
 <head>
     <title>Rolling Dice online</title>
     <meta charset="utf-8"/>
+    <meta name="viewport" content="initial-scale=1">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="style.css"/>
@@ -19,71 +20,107 @@ Repository: https://github.com/leonardoInf/rolling-dice
 <header>
     <div class="container-fluid">
     <h1>Rolling Dice online</h1>
-    <h4>Press <b>K</b> to roll the dice. Use <b>J/L</b> to view previous rolls. Press <b>R</b> to reset game.</h4>
+    <h4>Press <b>K</b> to roll the dice. Use <b>J/L</b> to view previous rolls. <br> 
+    Press <b>R</b> to reset game. Press <b>M</b> to toggle sound.</h4>
 </header>
 
 <article>
     <div id="main">
-    <h4>Game</h4>
-    <div class="text-center" id="box">
-        <div id="dices">
-        <span class="dice" id="dice1">&#9856;</span>
-        <span class="dice" id="dice2">&#9857;</span>
-        <span class="dice" id="dice3">&#9858;</span>
-        <span class="dice" id="dice4">&#9859;</span>
-        <span class="dice" id="dice5">&#9860;</span>
-        <span class="dice" id="dice0">&#9861;</span>
-        </div>
-        
-        <div class="text-center" id="controls">
-        <span class="btn btn-warning" id="roll-it">Roll it!</span>
-        <span class="btn btn-primary disabled" id="previous">Previous</span>
-        <span class="btn btn-danger disabled" id="next">Next</span>
+    <div class="row">
+        <div class="col-8"></div>
+        <div class="col col-offset-3">
+        <img src="images/playing.png" width="20" height="20" alt="image which indicates if sound is muted" id="mute-button"></img>
         </div>
     </div>
-    <h4>Stats</h4>
-    <div id="table-wrapper">
-  <table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">Number of points</th>
-      <th scope="col">Absolute frequency</th>
-      <th scope="col">Relative frequency</th>
-    </tr>
-    </thead>
-        <tbody>
-            <tr>
-                <th>1</th>
-                <td id="1-absolute">N. A.</td>
-                <td id="1-relative">N. A.</td>
-            </tr>
-            <tr>
-                <th>2</th>
-                <td id="2-absolute">N. A.</td>
-                <td id="2-relative">N. A.</td>
-            </tr>
-            <tr>
-                <th>3</th>
-                <td id="3-absolute">N. A.</td>
-                <td id="3-relative">N. A.</td>
-            </tr>
-            <tr>
-                <th>4</th>
-                <td id="4-absolute">N. A.</td>
-                <td id="4-relative">N. A.</td>
-            </tr>
-            <tr>
-                <th>5</th>
-                <td id="5-absolute">N. A.</td>
-                <td id="5-relative">N. A.</td>
-            </tr>
-            <tr>
-                <th>6</th>
-                <td id="6-absolute">N. A:</td>
-                <td id="6-relative">N. A.</td>
-            </tr>
-        </tbody>
+    <div class="row text-center" id="dices">
+        <div class="col-sm-1 col-lg-3"></div>
+        <div class="col-lg-6 col-sm-10">
+            <span class="dice" id="dice1">&#9856;
+            <span class="dice" id="dice2">&#9857;
+            <span class="dice" id="dice3">&#9858;
+            <span class="dice" id="dice4">&#9859;
+            <span class="dice" id="dice5">&#9860;
+            <span class="dice" id="dice0">&#9861;
+        </div>
+        <div class="col-sm-1 col-lg-3"></div>
+    </div>
+        
+        <div class="row text-center" id="controls">
+            <div class="col-sm-2"></div>
+            <div class="btn-group col-sm-8">
+            <button class="btn btn-warning" id="roll-it">Roll it!</button>
+            <button class="btn btn-primary disabled" id="previous">Previous</button>
+            <button class="btn btn-danger disabled" id="next">Next</button>
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+    <h4 class="secondary-title">Inventory</h4>
+    <div id="inventory">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Amount</th>
+                    <th>Percentage</th>
+                    <th>Sell</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Number 1</th>
+                    <td id="1-absolute">N. A.</td>
+                    <td id="1-relative">N. A.</td>
+                </tr>
+                <tr>
+                    <th>Number 2</th>
+                    <td id="2-absolute">N. A.</td>
+                    <td id="2-relative">N. A.</td>
+                </tr>
+                <tr>
+                    <th>Number 3</th>
+                    <td id="3-absolute">N. A.</td>
+                    <td id="3-relative">N. A.</td>
+                </tr>
+                <tr>
+                    <th>Number 4</th>
+                    <td id="4-absolute">N. A.</td>
+                    <td id="4-relative">N. A.</td>
+                </tr>
+                <tr>
+                    <th>Number 5</th>
+                    <td id="5-absolute">N. A.</td>
+                    <td id="5-relative">N. A.</td>
+                </tr>
+                <tr>
+                    <th>Number 6</th>
+                    <td id="6-absolute">N. A.</td>
+                    <td id="6-relative">N. A.</td>
+                </tr>
+            </tbody>
         </table>
+    </div>
+        
+        <h4>Settings</h4>
+        <div id="settings">
+        <form id="settings-form" action="">
+            <div class="form-group">
+                <label for="rolling-speed">Rolling speed:</label>
+                <select id="rolling-speed" name="rolling-speed">
+                    <option value="10">10 %</option>
+                    <option value="20">20 %</option>
+                    <option value="50">50 %</option>
+                    <option value="100" selected>100 %</option>
+                    <option value="200">200 %</option>
+                    <option value="400">400 %</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="show-immediately">Show immediately:</label>
+                <input type="checkbox" name="show-immediately" id="show-imm"></input>
+            </div>
+        </form>
+        <button class="btn btn-secondary" id="import">Import Data</button>
+        <button class="btn btn-secondary" id="export">Export Data</button>
         </div>
     </div>
 </article>
@@ -100,6 +137,7 @@ Repository: https://github.com/leonardoInf/rolling-dice
 </footer>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.js"></script>
 <script src="script.js"></script>
 
 </body>

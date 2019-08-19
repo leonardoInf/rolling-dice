@@ -11,13 +11,24 @@ var donePreRolling = false;
 // ************************************* 
  
 var amountOfLoops = 2;                 //toggle amount of pre-rolls
-var preRollDuration = 700;             //duration of one pre-roll in milliseconds
-var finalRollDuration = 1200;          //..
+var preRollDuration = 0;               //duration of one pre-roll in milliseconds
+var finalRollDuration = 0;             //duration of the final roll in milliseconds
 
 var rollHistory = [];                   //this is where previous rolls will be saved during execution
 var rollHistoryIndex = 1;               //holds the index of the currently viewed element
+var allowSound = true;
+var slotMachineSound;
+var cashRegister;
 
 $(document).ready(function(){          //when document is ready...
+
+    loadSettings();
+    slotMachineSound = new Howl({
+        src: ["https://dl.dropboxusercontent.com/s/cigwg9y4mcjh778/slotMachine.mp3"],
+        html5: true,
+        format: ["mp3", "aac"]});
+    cashRegister = new Howl({src: ["sound/cashRegister.mp3"]});
+    
 
     $(document).keydown(function(){    //capture keydowns
         if(event.which == 74){ //j
@@ -32,26 +43,45 @@ $(document).ready(function(){          //when document is ready...
             if(! $("#next").hasClass("disabled")){ startNext();}
         }
         
+        if(event.which == 77){ //m
+            toggleSound();
+        }
+        
         if(event.which == 82){ //r
             reset();
         }
     });
     
     //handle dice roll
-    $("#roll-it").click(function(){
-        startRoll();
-    });
+    $("#roll-it").click(startRoll);
     
     //show previous roll
-    $("#previous").click(function(){
-        startPrevious();
-    });
+    $("#previous").click(startPrevious);
     
-    $("#next").click(function(){
-       startNext(); 
+    $("#next").click(startNext);
+    
+    $("#rolling-speed").change(loadSettings);
+    
+    $("#mute-button").click(toggleSound);
+    
+    $("#show-imm").change(function(){
+        $("#rolling-speed").prop("disabled");
+        preRollDuration = 1;
+        finalRollDuration = 1;
     });
    
 });
+
+function startRoll(){
+    rollHistoryIndex = 1;       //skip last element
+    if(rollHistory.length == 0){
+        initializeTable("0");
+    }
+    disableButtons();
+    if(allowSound) slotMachineSound.play();
+    rollIt(false);             //set click event handler, start preroll
+}
+
 
 function rollIt(donePreRolling){
     if(donePreRolling){
@@ -63,7 +93,7 @@ function rollIt(donePreRolling){
             
             if(rolling_index == 1){
                 randInt = Math.floor(Math.random() * 6) + 1; //pseudorandom ints between 1 and 6
-                console.log("randInt: " + (randInt%6));
+                console.log("result: " + randInt);
             }
             
             if(rolling_index > randInt){
@@ -72,6 +102,7 @@ function rollIt(donePreRolling){
                 updateStatistics(randInt);
                 enableButtons();             //buttons can be used again
                 clearInterval(ID2);          //unregister interval loop
+                slotMachineSound.stop();    //mute slotMachineSound
                 return;
             }
             
@@ -79,8 +110,6 @@ function rollIt(donePreRolling){
             var rolling_index_decremented = rolling_index_mod - 1; 
             var deselectNum = ((rolling_index_decremented)+6)%6; //including modulos for -1
             deselectDice(deselectNum);
-            console.log(rolling_index);
-            
         }, finalRollDuration/6);
     }
     else preRoll();
@@ -100,7 +129,6 @@ function preRoll(){
                 rollIt(true);
                 return;
             }
-                console.log("changing dice" + rolling_index_mod);
                 if((rolling_index_mod) == 0){
                     selectDice(0);
                     $("#dice0").css("color", "lime");
@@ -113,15 +141,6 @@ function preRoll(){
                     deselectDice(deselectNum);
                 }
             }, preRollDuration/6);
-}
-
-function startRoll(){
-    rollHistoryIndex = 1;       //skip last element
-    if(rollHistory.length == 0){
-        initializeTable("0");
-    }
-    disableButtons();
-    rollIt(false);             //set click event handler, start preroll
 }
 
 function startPrevious(){
@@ -181,13 +200,11 @@ function enableButtons(){
 function disablePreviousButton(){
     $("#previous").css("pointer-events","none");
     $("#previous").addClass("disabled");
-    console.log("deactivated previous");
 }
 
 function enablePreviousButton(){
     $("#previous").css("pointer-events","auto");
     $("#previous").removeClass("disabled");
-    console.log("activated previous");
 }
 
 function disableNextButton(){
@@ -215,8 +232,8 @@ function updateStatistics(result){
         var absolute = parseInt($("#" + i + "-absolute").text());
         var relative = 0;
         var digits = 4;
-        relative = (absolute/rollHistory.length).toFixed(4);
-        $("#" + i + "-relative").text(parseFloat(relative));    //remove trailing zeros
+        relative = (absolute/rollHistory.length).toFixed(4)*100; //convert to percentage
+        $("#" + i + "-relative").text(parseFloat(relative) + "%");    //set text and remove trailing zeros
     }
 }
 
@@ -224,6 +241,25 @@ function reset(){
     rollHistory.length = 0;     //clear rollHistory
     initializeTable("N. A.");
     clearDices();
+}
+
+function loadSettings(){
+    var speedPercent = parseInt($("#rolling-speed").val());  //load select value
+    preRollDuration = 600 * 100/speedPercent;       //100 % = 600ms
+    finalRollDuration = preRollDuration * 1.7;      //final roll is slower than pre-roll
+}
+
+function toggleSound(){
+    if(allowSound){
+        $("#mute-button").attr("src", "images/not-playing.png");   //change src attribute
+        cashRegister.stop();
+        slotMachineSound.stop();
+    }
+    else{
+        $("#mute-button").attr("src", "images/playing.png");
+    }
+        
+    allowSound = !allowSound;     //toggle state
 }
     
     

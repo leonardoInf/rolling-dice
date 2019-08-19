@@ -5,51 +5,84 @@ Rolling Dice online - Layout
 Repository: https://github.com/leonardoInf/rolling-dice
 */
 
+h1 {
+    font-size: 4vw;
+}
+
 h4 {
     color: grey;
+    font-size: 2vw;
+}
+
+form label{
+    padding: 1rem;
+    font-size: 1.2rem;
+}
+
+
+button{
+    margin-right: 7vw;
+}
+
+footer p{
+    margin-left: .5rem;
 }
 
 .dice {
-    font-size: 5.5rem;
+    font-size: 8vw;
+    margin-right: .2rem;
+    cursor: default;     /*normal cursor because dice are unselectable */
+    user-select: none;   /*Make dice emojis unselectable */
+    -moz-user-select: none; /*Firefox needs it´s prefix */
+    -ms-user-select: none;  /* Microsoft browsers too */
 }
         
-#main {
-        padding-top: 2%;
-        width: 100%;
-        margin-bottom: 2rem;
-}
         
-#box {
-    display: inline-block;
+.my-border {
+    border: 5px solid black;
+    border-radius: 20px;     /*Rounded edges*/
+}
+
+.bordered{
+    border: 2px solid black;
+}
+
+#settings{
     position: relative;
     width: 50%;
     left: 25%;
-    border: 5px solid black;
-    border-radius: 20px;     /*Rounded edges*/
-    margin-bottom: 1.5rem;
+    border: 2px solid black;
 }
-        
-#controls{
-    margin-left: 5rem;
-}
-
-#controls span{
-    margin-right: 5rem;
-    margin-bottom: 2rem;
-}
+    
+#dices {
+    margin-top: -1.5rem;
+}    
 
 #main h4{
     position: relative;
     left: 25%;
 }
         
-#table-wrapper {
+#inventory {
     position: relative;
     left: 25%;
     width: 50%;
     height: 11rem;
     border: 2px solid black;
     overflow: auto;
+    margin-bottom: 3rem;
 }
+
+#mute-button {
+    position: relative; /*Apparently this must be set for z-index to work*/
+    z-index: 99;        /*raising its z-index to be clickable*/
+    margin-top: .5rem;
+    margin-left: 1rem;
+}
+
+#roll-it{
+    margin-left: 7vw
+}
+
         
         
