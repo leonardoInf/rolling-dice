@@ -23,10 +23,11 @@ footer p{
 .dice {
     font-size: 8vw;
     margin-right: .2rem;
-    cursor: default;     /*normal cursor because dice are unselectable */
-    user-select: none;   /*Make dice emojis unselectable */
-    -moz-user-select: none; /*Firefox needs it´s prefix */
-    -ms-user-select: none;  /* Microsoft browsers too */
+    cursor: default;              /*set normal cursor because dices are unselectable */
+    user-select: none;           /*make dice emojis unselectable */
+    -moz-user-select: none;     /*Firefox needs it´s prefix */
+    -ms-user-select: none;      /* Microsoft browsers too */
+    -webkit-user-select: none;   /* Safari also needs special treatment */
 }
           
 .rounded-border {
@@ -50,6 +51,7 @@ footer p{
     width: 50%;
     left: 25%;
     border: 2px solid black;
+    margin-bottom: 5vw;
 }
     
 #dices {
