@@ -5,14 +5,6 @@ Rolling Dice online - Layout
 Repository: https://github.com/leonardoInf/rolling-dice
 */
 
-h1 {
-    font-size: 4vw;
-}
-
-h4 {
-    color: grey;
-    font-size: 2vw;
-}
 
 form label{
     padding: 1rem;
@@ -36,15 +28,21 @@ footer p{
     -moz-user-select: none; /*Firefox needs it´s prefix */
     -ms-user-select: none;  /* Microsoft browsers too */
 }
-        
-        
-.my-border {
+          
+.rounded-border {
     border: 5px solid black;
     border-radius: 20px;     /*Rounded edges*/
 }
 
-.bordered{
+.bordered {
     border: 2px solid black;
+}
+
+.subheading {
+    color: grey;
+    font-size: 4vw;
+    margin-top: 5vw;
+    margin-bottom: 1.5vw;
 }
 
 #settings{
@@ -55,7 +53,7 @@ footer p{
 }
     
 #dices {
-    margin-top: -1.5rem;
+    margin-top: 0vw;
 }    
 
 #main h4{
@@ -83,6 +81,11 @@ footer p{
 #roll-it{
     margin-left: 7vw
 }
+
+#title{
+    font-weight: bold;
+}
+
 
         
         

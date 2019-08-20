@@ -18,16 +18,18 @@ var rollHistory = [];                   //this is where previous rolls will be s
 var rollHistoryIndex = 1;               //holds the index of the currently viewed element
 var allowSound = true;
 var slotMachineSound;
-var cashRegister;
+//var cashRegister;
 
 $(document).ready(function(){          //when document is ready...
 
     loadSettings();
+    $("#history-notification").hide();  //hide notification that previous rolls are being shown
+    
     slotMachineSound = new Howl({
         src: ["https://dl.dropboxusercontent.com/s/cigwg9y4mcjh778/slotMachine.mp3"],
         html5: true,
         format: ["mp3", "aac"]});
-    cashRegister = new Howl({src: ["sound/cashRegister.mp3"]});
+    //cashRegister = new Howl({src: ["sound/cashRegister.mp3"]});
     
 
     $(document).keydown(function(){    //capture keydowns
@@ -40,7 +42,7 @@ $(document).ready(function(){          //when document is ready...
         }
         
         if(event.which == 76){ //l
-            if(! $("#next").hasClass("disabled")){ startNext();}
+            if(! $("#next").hasClass("disabled")) startNext();
         }
         
         if(event.which == 77){ //m
@@ -53,12 +55,19 @@ $(document).ready(function(){          //when document is ready...
     });
     
     //handle dice roll
-    $("#roll-it").click(startRoll);
+    $("#roll-it").click(function(){
+        if(! $("#roll-it").hasClass("disabled")) startRoll();
+    });
     
     //show previous roll
-    $("#previous").click(startPrevious);
+    $("#previous").click(function(){
+        if(! $("#previous").hasClass("disabled")) startPrevious();
+    });
     
-    $("#next").click(startNext);
+    //show next roll
+    $("#next").click(function(){
+        if(! $("#next").hasClass("disabled")) startNext();
+    });
     
     $("#rolling-speed").change(loadSettings);
     
@@ -69,6 +78,8 @@ $(document).ready(function(){          //when document is ready...
         preRollDuration = 1;
         finalRollDuration = 1;
     });
+    
+    $("html.touch #keyboard-tutorial").remove();
    
 });
 
@@ -78,7 +89,7 @@ function startRoll(){
         initializeTable("0");
     }
     disableButtons();
-    if(allowSound) slotMachineSound.play();
+    slotMachineSound.play();    //even play if sound is muted (user could unmute again)
     rollIt(false);             //set click event handler, start preroll
 }
 
@@ -117,7 +128,11 @@ function rollIt(donePreRolling){
 
 //Roll "amountOfLoops"-times before actually choosing a dice
 function preRoll(){
-    clearDices();
+    
+    clearDices();   //remove highlighting for all dices
+    $("#history-notification").hide();  //hide notification that previous rolls are being shown
+    
+    
     var ID =  setInterval(function(){  //every 500ms... (this is an example of a closure btw)
             rolling_index += 1;
             var rolling_index_mod = rolling_index%6;   //allow multiple loops
@@ -131,8 +146,7 @@ function preRoll(){
             }
                 if((rolling_index_mod) == 0){
                     selectDice(0);
-                    $("#dice0").css("color", "lime");
-                    $("#dice5").css("color", "black");
+                    deselectDice(5);
                 }
                 else{
                     selectDice(rolling_index_mod);
@@ -147,17 +161,19 @@ function startPrevious(){
     clearDices();
     enableNextButton();
     rollHistoryIndex += 1;
+    updateNotification(rollHistoryIndex);
+    console.log("Highlighting: " + (rollHistory[rollHistory.length-(rollHistoryIndex)]));
     highlightDice(rollHistory[rollHistory.length-(rollHistoryIndex)]);
-    if((rollHistory.length-1) < rollHistoryIndex+1){    //disable button if there are no more elements
+    if((rollHistory.length-1) < (rollHistoryIndex)){    //disable button if there are no more elements
         disablePreviousButton();
     }
-    console.log("Looking at: " + rollHistory[rollHistory.length-(rollHistoryIndex)]);
 }
 
 function startNext(){
     clearDices();
     enablePreviousButton();
     rollHistoryIndex -= 1;
+    updateNotification(rollHistoryIndex);
     highlightDice(rollHistory[rollHistory.length-(rollHistoryIndex)]);
     if(rollHistoryIndex == 1){  //when arrived at last element
         disableNextButton();
@@ -166,14 +182,20 @@ function startNext(){
 
 function selectDice(num){
     $("#dice" + num).css("color", "lime");
+    // on mobile devices the dice symbols are often rendered as emojis so we
+    // change the font size to make the selection visible
+    $("#dice" + num).css("font-size", "7vw");
 }
 
 function highlightDice(num){
     $("#dice" + num).css("color", "yellow");
+    $("#dice" + num).css("font-size", "7vw");
 }
 
 function deselectDice(num){
     $("#dice" + num).css("color", "black");
+    // reset font size
+    $("#dice" + num).css("font-size", "8vw");
 }
 
 function clearDices(){
@@ -252,14 +274,19 @@ function loadSettings(){
 function toggleSound(){
     if(allowSound){
         $("#mute-button").attr("src", "images/not-playing.png");   //change src attribute
-        cashRegister.stop();
-        slotMachineSound.stop();
+        slotMachineSound.volume(0);
     }
     else{
         $("#mute-button").attr("src", "images/playing.png");
+        slotMachineSound.volume(1);    //unmutes because sound was previously muted
     }
         
     allowSound = !allowSound;     //toggle state
+}
+
+function updateNotification(num){
+    $("#history-notification").text("Showing previous roll #" + (rollHistory.length-num+1));
+    $("#history-notification").show();
 }
     
     

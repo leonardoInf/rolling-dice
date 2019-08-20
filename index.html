@@ -18,10 +18,13 @@ Repository: https://github.com/leonardoInf/rolling-dice
 
 <body>
 <header>
+    <div id="history-notification" class="alert alert-info">
+        Showing previous roll #
+    </div>
     <div class="container-fluid">
-    <h1>Rolling Dice online</h1>
-    <h4>Press <b>K</b> to roll the dice. Use <b>J/L</b> to view previous rolls. <br> 
-    Press <b>R</b> to reset game. Press <b>M</b> to toggle sound.</h4>
+    <h1 id="title">Rolling Dice online</h1>
+    <h5 id="keyboard-tutorial">Press <b>K</b> to roll the dice. Use <b>J/L</b> to view previous rolls. <br> 
+    Press <b>R</b> to reset game. Press <b>M</b> to toggle sound.</h5>
 </header>
 
 <article>
@@ -54,7 +57,7 @@ Repository: https://github.com/leonardoInf/rolling-dice
             </div>
             <div class="col-sm-2"></div>
         </div>
-    <h4 class="secondary-title">Inventory</h4>
+    <h4 class="subheading">Inventory</h4>
     <div id="inventory">
         <table class="table table-striped">
             <thead>
@@ -65,42 +68,21 @@ Repository: https://github.com/leonardoInf/rolling-dice
                     <th>Sell</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="inventory-body">
+                <!-- 
+                Sample inventory entry
                 <tr>
                     <th>Number 1</th>
                     <td id="1-absolute">N. A.</td>
                     <td id="1-relative">N. A.</td>
-                </tr>
-                <tr>
-                    <th>Number 2</th>
-                    <td id="2-absolute">N. A.</td>
-                    <td id="2-relative">N. A.</td>
-                </tr>
-                <tr>
-                    <th>Number 3</th>
-                    <td id="3-absolute">N. A.</td>
-                    <td id="3-relative">N. A.</td>
-                </tr>
-                <tr>
-                    <th>Number 4</th>
-                    <td id="4-absolute">N. A.</td>
-                    <td id="4-relative">N. A.</td>
-                </tr>
-                <tr>
-                    <th>Number 5</th>
-                    <td id="5-absolute">N. A.</td>
-                    <td id="5-relative">N. A.</td>
-                </tr>
-                <tr>
-                    <th>Number 6</th>
-                    <td id="6-absolute">N. A.</td>
-                    <td id="6-relative">N. A.</td>
-                </tr>
+                    <td id="1-sell">X Coins</td>
+                </tr> 
+                -->
             </tbody>
         </table>
     </div>
         
-        <h4>Settings</h4>
+        <h4 class="subheading">Settings</h4>
         <div id="settings">
         <form id="settings-form" action="">
             <div class="form-group">
